@@ -1,20 +1,17 @@
 
 export const const_data = {
     CURRENCY_ICON: "₹",
-    CURRENCY_TYPE: "INR",
-<<<<<<< HEAD
+    CURRENCY_TYPE: "INR", 
     API_URL: "api.veguess.shop",
     FRONT_END_DOMAIN: "api.veguess.shop",
     ADMIN_PANEL_URL: "api.veguess.shop",
     user_profile_path: "api.veguess.shop/images/userProfile",
-    public_image_url: "api.veguess.shop/images/web_images",
-=======
+    public_image_url: "api.veguess.shop/images/web_images", 
     API_URL: "https://api.veguess.shop",
     FRONT_END_DOMAIN: "https://veguess.shop",
     ADMIN_PANEL_URL: "https://admin.veguess.shop",
     user_profile_path: "https://api.veguess.shop/images/userProfile",
-    public_image_url: "https://api.veguess.shop/images/web_images",
->>>>>>> 1055263ac9a21fcb08ed750723527a2859ddc1b0
+    public_image_url: "https://api.veguess.shop/images/web_images", 
     API_ENDPOINT: {
         admin_jwt_regenarate: "/admin/regenarate_jwt",
         admin_jwt_validate: "/admin/validate_jwt",
