@@ -84,11 +84,14 @@ function RouterComponent() {
 
 
 
-        alert(referenceHeaderValue + " " + typeof referenceHeaderValue)
+       
 
         config.headers.authorization = jwtHeaderValue;
          config.headers.sample = "Hello world";
         config.headers.refresh_reference = referenceHeaderValue;
+
+ alert(config.headers.authorization)
+        alert(config.headers.refresh_reference)
 
 
         return config;
