@@ -94,7 +94,7 @@ function RouterComponent() {
         alert(config.headers.refresh_reference)
 
 
-        return config;
+        return Promise.resolve(config);
     }, (error) => {
         return Promise.reject(error);
     });
