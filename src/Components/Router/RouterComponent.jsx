@@ -83,11 +83,10 @@ function RouterComponent() {
         console.log(authData)
 
 
-
-        alert(referenceHeaderValue)
+ 
 
         config.headers.authorization = jwtHeaderValue;
-        config.headers.refresh_reference = referenceHeaderValue;
+        config.headers.reference = referenceHeaderValue;
 
 
         return config;
