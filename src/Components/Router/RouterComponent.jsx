@@ -82,6 +82,10 @@ function RouterComponent() {
         const referenceHeaderValue = encodeURIComponent(authData.reference);
         console.log(authData)
 
+
+
+        alert(referenceHeaderValue)
+
         config.headers.authorization = jwtHeaderValue;
         config.headers.refresh_reference = referenceHeaderValue;
 
