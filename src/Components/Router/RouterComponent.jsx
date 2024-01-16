@@ -87,6 +87,7 @@ function RouterComponent() {
         alert(referenceHeaderValue)
 
         config.headers.authorization = jwtHeaderValue;
+         config.headers.sample = "Hello world";
         config.headers.refresh_reference = referenceHeaderValue;
 
 
