@@ -62,11 +62,13 @@ function UploadTab() {
             const file = new File([blobImage], 'image_filename.png', { type: 'image/png' });
 
             uploadFile(file, sizeKb).then((data) => {
+                console.log(data)
                 window.changetabimage();
                 console.log(data)
                 setReloadFlag(!reloadFlag)
                 toast.success("Image upload success", const_data.DEFAULT_ALERT_DATA)
             }).catch((err) => {
+                console.log(err)
                 toast.error("Image upload failed", const_data.DEFAULT_ALERT_DATA)
             })
 
