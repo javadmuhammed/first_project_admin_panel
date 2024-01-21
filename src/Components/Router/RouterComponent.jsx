@@ -63,7 +63,7 @@ function RouterComponent() {
 
 
 
-    instance.interceptors.request.use(function (config) {
+    instance.interceptors.request.use(async function (config) {
 
 
         try {
@@ -78,18 +78,16 @@ function RouterComponent() {
         }
 
 
-        const jwtHeaderValue = "Bearer " + encodeURIComponent(authData.jwt);
-        const referenceHeaderValue = encodeURIComponent(authData.reference);
+        const jwtHeaderValue = "Bearer " +  encodeURIComponent(authData.jwt);
+        const referenceHeaderValue = await encodeURIComponent(authData.reference);
         console.log(authData)
-
 
  
 
         config.headers.authorization = jwtHeaderValue;
         config.headers.reference = referenceHeaderValue;
-
-
-        return config;
+  
+        return Promise.resolve(config);
     }, (error) => {
         return Promise.reject(error);
     });
