@@ -178,7 +178,7 @@ function ManageUsers() {
                                                 <td>{eachUser.mobile}</td>
                                                 <td>{eachUser?.email}</td>
                                                 <td>
-                                                    {eachUser.status ? "Active" : "In Active"}
+                                                    {(eachUser.status=="false" || eachUser.status==false) ? "In Active" : "Active"}
                                                 </td>
                                                 <td>
                                                     <Link to={`/edit_user/${eachUser._id}`} className='btn btn-primary'>Edit</Link>
