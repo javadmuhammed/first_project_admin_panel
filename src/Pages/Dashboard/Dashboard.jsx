@@ -232,7 +232,7 @@ function Dashboard() {
                                         userList?.slice(0, 12).map((eachUser) => {
                                             return (
                                                 <li className="col-xs-6 col-md-4 col-lg-3 col-6">
-                                                    <CardUserProfile email={eachUser?.email} id={eachUser._id} name={eachUser?.first_name + " " + eachUser?.last_name} phone={eachUser?.phone} profile={eachUser?.profile == null ? getAvtarImage() : const_data.user_profile_path + "/" + eachUser?.profile} username={eachUser?.username}     ></CardUserProfile>
+                                                    <CardUserProfile email={eachUser?.email} id={eachUser._id} name={eachUser?.first_name + " " + eachUser?.last_name} phone={eachUser?.mobile} profile={eachUser?.profile == null ? getAvtarImage() : const_data.user_profile_path + "/" + eachUser?.profile} username={eachUser?.username}     ></CardUserProfile>
                                                 </li>
                                             )
                                         })

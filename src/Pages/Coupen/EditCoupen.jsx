@@ -11,6 +11,7 @@ function EditCoupen() {
 
 
   let { coupen_id } = useParams();
+  let [startEditing, setStartEditing] = useState(false);
 
 
   let [initValues, setInitValues] = useState({
@@ -39,46 +40,49 @@ function EditCoupen() {
   }, [])
 
   let schemeValidation = Yup.object().shape({
-    name: Yup.string("Please valid string").required("Coupen name is required"),
-    code: Yup.string("Please valid string").required("Coupen code is required"),
-    description: Yup.string("Please valid string").required("Coupen description is required"),
+    name: Yup.string("Please valid string").trim().required("Coupen name is required"),
+    code: Yup.string("Please valid string").trim().required("Coupen code is required"),
+    description: Yup.string("Please valid string").trim().required("Coupen description is required"),
     offer: Yup.string("Please valid string").required("Coupen offer is required"),
     minimum_order: Yup.number().typeError("Please enter valid value").required("Coupen minimum value is required"),
     maximum_order: Yup.number().typeError("Please valid value").moreThan(Yup.ref("minimum_order"), "Please enter value greater than minimum order").required("Coupen maximum value is required"),
     valid_from: Yup.date("Please valid date").required("Coupen valid from is required"),
     valid_to: Yup.date("Please valid date").required("Coupen valid to is required"),
-    status: Yup.string("Please valid string").required("Coupen status is required"),
+    status: Yup.string("Please valid string").trim().required("Coupen status is required"),
   })
 
 
   function onEditCoupen(values) {
-    let coupenCodeData = {
-      name: values?.name,
-      code: values?.code,
-      description: values?.description,
-      offer: values?.offer,
-      minimum_order: values?.minimum_order,
-      maximum_order: values?.maximum_order,
-      valid_from: values?.valid_from,
-      valid_to: values?.valid_to,
-      status: values?.status,
-      edit_id: [coupen_id]
-    }
 
-    editCoupen(coupenCodeData).then((data) => {
-      let response = data?.data;
-      if (response?.status) {
-        toast.success("Coupen update success") 
-      } else {
-        toast.error("Something went wrong")
+    if (startEditing) {
+      let coupenCodeData = {
+        name: values?.name,
+        code: values?.code,
+        description: values?.description,
+        offer: values?.offer,
+        minimum_order: values?.minimum_order,
+        maximum_order: values?.maximum_order,
+        valid_from: values?.valid_from,
+        valid_to: values?.valid_to,
+        status: values?.status,
+        edit_id: [coupen_id]
       }
-    }).catch((err) => toast.error("Something went wrong"))
+
+      editCoupen(coupenCodeData).then((data) => {
+        let response = data?.data;
+        if (response?.status) {
+          toast.success("Coupen update success")
+        } else {
+          toast.error("Something went wrong")
+        }
+      }).catch((err) => toast.error("Something went wrong"))
+    }
   }
 
   return (
     <AdminLayout>
       <div className="content_body" id="content_body">
-        <div className="wrapper_content_body">
+        {startEditing ? <div className="wrapper_content_body">
 
           <h2>Edit Coupen Code</h2>
 
@@ -179,7 +183,7 @@ function EditCoupen() {
               </Formik>
             </div>
           </div>
-        </div>
+        </div> : null}
       </div>
     </AdminLayout>
   )

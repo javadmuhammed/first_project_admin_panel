@@ -37,11 +37,11 @@ function AddUsers() {
     }
 
     let validateUserScheme = Yup.object().shape({
-        first_name: Yup.string("Please enter valid string").required("Please enter first name"),
-        last_name: Yup.string("Please enter valid string").required("Please enter last name"),
+        first_name: Yup.string("Please enter valid string").trim().required("Please enter first name"),
+        last_name: Yup.string("Please enter valid string").trim().required("Please enter last name"),
         mobile: Yup.number("Please enter valid number").required("Please enter phone number").min(10, "Please enter minimum 10 digit"),
-        email: Yup.string("Please enter valid email").required("Please enter valid email address").email("Please enter valid email address"),
-        password: Yup.string("Please enter valid password").required("Please enter valid password"),
+        email: Yup.string("Please enter valid email").trim().required("Please enter valid email address").email("Please enter valid email address"),
+        password: Yup.string("Please enter valid password").trim().required("Please enter valid password"),
         status: Yup.bool("Please enter valid status").required("Please enter valid status"),
     })
 

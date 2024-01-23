@@ -14,13 +14,14 @@ function AddBanner() {
     let initValues = {
         name: "",
         url: "",
-        status: ""
+        status: "",
+        image: ""
     }
 
     let validation = Yup.object().shape({
-        name: Yup.string().required("Name field is required"),
-        url: Yup.string().required("URL is required"),
-        status: Yup.string().required("Status is required")
+        name: Yup.string().trim().required("Name field is required"),
+        url: Yup.string().trim().required("URL is required"),
+        status: Yup.string().trim().required("Status is required")
     })
 
 
@@ -31,7 +32,7 @@ function AddBanner() {
             if (response.status) {
                 toast.success("Banner created success")
                 resetForm();
-                bannerImage.current.value="";
+                bannerImage.current.value = "";
             } else {
                 toast.error("Banner created failed")
             }
@@ -53,6 +54,16 @@ function AddBanner() {
                                 initialValues={initValues}
                                 onSubmit={handleAddBanner}
                                 validationSchema={validation}
+                                validate={(values) => {
+                                    let error = {};
+                                    if (bannerImage.current.value == "" || bannerImage.current.value == null) {
+                                        error.image = "Please select valid image";
+                                    } else {
+                                        error = {}
+                                    }
+
+                                    return error;
+                                }}
                             >
 
                                 <Form>
@@ -74,12 +85,7 @@ function AddBanner() {
 
                                                 <label htmlFor="name">Image</label>
                                                 <input ref={bannerImage} className="pointerNone" id="productImage" name="productImage" type="text" placeholder="Select Product Images" />
-                                                {
-                                                    bannerImageError.error && (
-                                                        <p className='formValidateError'>{bannerImageError.msg}</p>
-                                                    )
-                                                }
-
+                                                <ErrorMessage name="image" component="div" className="formValidateError" ></ErrorMessage>
 
                                             </div>
                                         </div>

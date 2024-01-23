@@ -11,7 +11,7 @@ function EditBanner() {
     let { edit_id } = useParams();
     let bannerImage = useRef();
     let [bannerImageError, setBannerImageError] = useState({ error: false, msg: "Product images is required" })
-    // let
+    let [startEditing, setStartEditing] = useState(false);
 
     let [initValues, setInitValues] = useState({})
 
@@ -19,38 +19,41 @@ function EditBanner() {
 
 
     let validation = Yup.object().shape({
-        name: Yup.string().required("Name field is required"),
-        url: Yup.string().required("URL is required"),
-        status: Yup.string().required("Status is required")
+        name: Yup.string().trim().required("Name field is required"),
+        url: Yup.string().trim().required("URL is required"),
+        status: Yup.string().trim().required("Status is required")
     })
 
 
     function handleEditBanner(values, { resetForm }) {
 
-        let bannerImg = bannerImage.current.value;
-        
-        let editData = {
-            name: values?.name,
-            url: values?.url,
-            status: values?.status,
-            images: bannerImg,
-            edit_id: [edit_id]
-        }
+        if (startEditing) {
 
+            let bannerImg = bannerImage.current.value;
 
-        console.log(editData)
-
-
-        editBannerEndPoint(editData).then((edit) => {
-            let response = edit?.data;
-            if (response?.status) {
-                toast.success("Banner update success");
-            } else {
-                toast.error("Something went wrong")
+            let editData = {
+                name: values?.name,
+                url: values?.url,
+                status: values?.status,
+                images: bannerImg,
+                edit_id: [edit_id]
             }
-        }).catch((err) => {
-            toast.error("Something went wrong")
-        })
+
+
+            console.log(editData)
+
+
+            editBannerEndPoint(editData).then((edit) => {
+                let response = edit?.data;
+                if (response?.status) {
+                    toast.success("Banner update success");
+                } else {
+                    toast.error("Something went wrong")
+                }
+            }).catch((err) => {
+                toast.error("Something went wrong")
+            })
+        }
     }
 
 
@@ -67,7 +70,7 @@ function EditBanner() {
     return (
         <AdminLayout>
             <div className="content_body" id="content_body">
-                <div className="wrapper_content_body">
+                {startEditing ? <div className="wrapper_content_body">
                     <h2>Edit Banner</h2>
 
                     <div className="content_box_border">
@@ -142,7 +145,7 @@ function EditBanner() {
                             </Formik>
                         </div>
                     </div>
-                </div>
+                </div> : null}
             </div>
         </AdminLayout>
     )

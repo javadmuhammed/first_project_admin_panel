@@ -7,6 +7,10 @@ import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 function EditCategory() {
 
+
+
+    let [startEditing, setStartEditing] = useState(true);
+
     let [initialValues, setInitialValues] = useState({
         name: "",
         status: false,
@@ -18,31 +22,34 @@ function EditCategory() {
 
 
     let validationSchema = Yup.object().shape({
-        name: Yup.string("Name should be string").required("Name is required"),
-        status: Yup.string("").required("Status is required"),
+        name: Yup.string("Name should be string").trim().required("Name is required"),
+        status: Yup.string("").trim().required("Status is required"),
         offer: Yup.number("Please enter valid number").max(10, "Offer percentage must be less than 10%")
     })
 
 
     function handleSubmit(values) {
-        updateCategoryEndPoint(
-            edit_id,
-            {
-                name: values.name,
-                status: values.status,
-                image: categoryImageRef.current.value,
-                offer: values.offer
-            }).then((upd) => {
-                let response = upd.data;
-                if (response?.status) {
-                    toast.success("Category updated success")
-                } else {
-                    toast.error("Category updated failed")
-                }
-            }).catch((err) => {
-                console.log(err)
-                toast.error("Something went wrong")
-            })
+
+        if (startEditing) {
+            updateCategoryEndPoint(
+                edit_id,
+                {
+                    name: values.name,
+                    status: values.status,
+                    image: categoryImageRef.current.value,
+                    offer: values.offer
+                }).then((upd) => {
+                    let response = upd.data;
+                    if (response?.status) {
+                        toast.success("Category updated success")
+                    } else {
+                        toast.error("Category updated failed")
+                    }
+                }).catch((err) => {
+                    console.log(err)
+                    toast.error("Something went wrong")
+                })
+        }   
     }
 
     useEffect(() => {
@@ -64,7 +71,7 @@ function EditCategory() {
         <AdminLayout>
 
             <div className="content_body" id="content_body">
-                <div className="wrapper_content_body">
+                {startEditing ? <div className="wrapper_content_body">
                     <h2>Edit Category</h2>
 
                     <div className="content_box_border">
@@ -150,7 +157,7 @@ function EditCategory() {
                             </Formik>
                         </div>
                     </div>
-                </div>
+                </div> : null}
             </div>
         </AdminLayout>
     )

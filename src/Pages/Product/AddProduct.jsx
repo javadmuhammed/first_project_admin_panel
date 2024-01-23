@@ -101,8 +101,8 @@ function AddProduct() {
 
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    small_description: Yup.string().required('Small description is required'),
+    name: Yup.string().trim().required('Name is required'),
+    small_description: Yup.string().trim().required('Small description is required'),
     sale_price: Yup.number()
       .lessThan(Yup.ref("original_price"), "Sales price must be less than the original price")
       .min(1, "Sales price should be a minimum of 1")
@@ -111,14 +111,14 @@ function AddProduct() {
       .moreThan(Yup.ref("sale_price"), "Original price must be greater than the sale price")
       .min(1, "Original price should be a minimum of 1")
       .required('Original price is required'),
-    category: Yup.string().required('Category is required'),
-    extra_description: Yup.string().required('Extra description is required'),
-    description: Yup.string().required('Description is required'),
-    key_features: Yup.string().required("Select Prodcut Key Features"),
-    specifications: Yup.string().required("Select Prodcut Specification"),
+    category: Yup.string().trim().required('Category is required'),
+    extra_description: Yup.string().trim().required('Extra description is required'),
+    description: Yup.string().trim().required('Description is required'),
+    key_features: Yup.string().trim().required("Select Prodcut Key Features"),
+    specifications: Yup.string().trim().required("Select Prodcut Specification"),
     stock: Yup.number().min(0).required('Stock is required'),
-    status: Yup.string().required("Select Product Status"),
-    option: Yup.string().required("Select Product Option"),
+    status: Yup.string().trim().required("Select Product Status"),
+    option: Yup.string().trim().required("Select Product Option"),
     // productImage: Yup.string().required("Select Product Images"),
   });
 

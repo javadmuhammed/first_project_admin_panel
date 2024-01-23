@@ -60,7 +60,7 @@ function SiteSettings() {
 
     //Account Related
     let accountSettingsValidation = Yup.object().shape({
-        email_address: Yup.string().email("Please enter valid mail address").required("Email address is require"),
+        email_address: Yup.string().trim().email("Please enter valid mail address").required("Email address is require"),
         phone_number: Yup.number("Please enter valid phone number").required("Phone number is required")
     })
     let [accountInitialValues, setAccountInitialValues] = useState({
@@ -92,8 +92,8 @@ function SiteSettings() {
 
     // Profile Related
     let profileValidation = Yup.object().shape({
-        first_name: Yup.string("Please enter valid first name").required("First name is required"),
-        last_name: Yup.string("Please enter valid last name").required("Last name is required")
+        first_name: Yup.string("Please enter valid first name").trim().required("First name is required"),
+        last_name: Yup.string("Please enter valid last name").trim().required("Last name is required")
     })
     let profileRelatedInitialValues = {
         first_name: "",
@@ -107,8 +107,8 @@ function SiteSettings() {
         password: ""
     }
     let authenticationValidation = Yup.object().shape({
-        username: Yup.string("Please enter valid username").required("Username is required"),
-        password: Yup.string("Please enter valid string password").required("Password is required")
+        username: Yup.string("Please enter valid username").trim().required("Username is required"),
+        password: Yup.string("Please enter valid string password").trim().required("Password is required")
     })
     function onPasswordUpdate() { }
 

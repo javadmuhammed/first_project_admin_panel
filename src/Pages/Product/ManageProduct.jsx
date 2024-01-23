@@ -17,6 +17,15 @@ function ManageProduct() {
     let [productChecked, setProductChecked] = useState([]);
     let [temporaryProducts, setTemporaryProducts] = useState([]);
 
+
+    function checkSelectedCount() { 
+        if (productChecked?.length < 1) {
+            toast.error("Please select any records");
+            return false;
+        }
+        return true;
+    }
+
     function toggleProductCheck(product_id) {
         if (productChecked.includes(product_id)) {
             setProductChecked(productChecked.filter((checked) => checked != product_id));
@@ -41,7 +50,7 @@ function ManageProduct() {
 
 
     function activeProductOnly() {
-        let activeProductOnlyList = temporaryProducts.filter((eachIteam) => eachIteam.status == true);
+        let activeProductOnlyList = temporaryProducts.filter((eachIteam) => eachIteam.status);
         updateTableProduct(activeProductOnlyList);
     }
 
@@ -52,7 +61,9 @@ function ManageProduct() {
 
 
     function AllProductsOnly() {
-        updateTableProduct(temporaryProducts);
+        if (temporaryProducts.length !== allProduct.length) {
+            updateTableProduct(temporaryProducts);
+        }
     }
 
     function updateProductList() {
@@ -77,31 +88,33 @@ function ManageProduct() {
 
 
     function updateProductStatus(status) {
-        let newStatus = status == "ACTIVE" ? true : false;
+        if (checkSelectedCount()) {
+            let newStatus = status == "ACTIVE" ? true : false;
 
-        updateManyProduct(productChecked.join(','), { status: newStatus }).then((updated) => {
-            let response = updated?.data;
-            console.log(response)
-            if (response?.status) {
-                toast.success("Product updated success");
-                console.log(productChecked)
-                productChecked.forEach((items) => {
-                    let element_id = "product_status_" + items;
-                    let element_doc = document.getElementById(element_id);
-                    element_doc.innerText = status
-                })
-            } else {
-                toast.error("Product updated failed1");
-            }
-        }).catch((err) => {
-            console.log(err)
-            toast.error("Product updated failed2");
-        })
+            updateManyProduct(productChecked.join(','), { status: newStatus }).then((updated) => {
+                let response = updated?.data;
+                console.log(response)
+                if (response?.status) {
+                    toast.success("Product updated success");
+                    console.log(productChecked)
+                    productChecked.forEach((items) => {
+                        let element_id = "product_status_" + items;
+                        let element_doc = document.getElementById(element_id);
+                        element_doc.innerText = status
+                    })
+                } else {
+                    toast.error("Product updated failed");
+                }
+            }).catch((err) => {
+                console.log(err)
+                toast.error("Product updated failed");
+            })
+        }
     }
 
 
     function deleteBulkProduct() {
-        if (window.confirm("Are you sure want to delete products")) {
+        if (checkSelectedCount()) {
             deleteProducts(productChecked.join(',')).then((deleted) => {
                 let response = deleted?.data;
                 if (response?.status) {
@@ -127,7 +140,7 @@ function ManageProduct() {
                         <div className="row rmr">
 
                             <div className="col-lg-3 col-xs-12 col-sm-6">
-                                <FiltterButton isButton={true} className={"green"} title={"Add Product"} icon={"fa-add"} to={"/add_product"} />
+                                <FiltterButton isButton={false} className={"green"} title={"Add Product"} icon={"fa-add"} to={"/add_product"} />
                             </div>
 
                             <div className="col-lg-3 col-xs-12 col-sm-6">
@@ -201,6 +214,7 @@ function ManageProduct() {
                             <tbody>
                                 {
                                     allProduct?.map((productItem) => {
+
                                         return (
                                             <tr id={"row_id_" + productItem._id}>
                                                 <td>

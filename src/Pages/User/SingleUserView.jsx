@@ -10,17 +10,17 @@ import { getValidDateFormat } from '../../helper/Helper';
 function SingleUserView() {
 
     let { user_id } = useParams();
-    let [thisUser, setThisUser] = useState({});
+    let [thisUser, setThisUser] = useState(null);
     let [userOrders, setUserOrder] = useState([])
 
 
-    useEffect(()=>{
+    useEffect(() => {
         $("#userOrders").DataTable()
-    },[userOrders])
+    }, [userOrders])
 
     function setOrdersDataToTable(orders) {
         setUserOrder(orders)
-        
+
     }
 
     function fetchThisUserOrder() {
@@ -28,7 +28,7 @@ function SingleUserView() {
             let response = data?.data;
             if (response?.status) {
                 let orders = response?.orders
-                setOrdersDataToTable(orders) 
+                setOrdersDataToTable(orders)
             }
         }).catch((err) => { })
     }
@@ -55,7 +55,7 @@ function SingleUserView() {
     return (
         <AdminLayout>
             <div className="content_body" id="content_body">
-                <div className="wrapper_content_body">
+                {thisUser ? <div className="wrapper_content_body">
                     <h2> {thisUser?.first_name + " " + thisUser?.last_name}  Profile</h2>
 
 
@@ -70,7 +70,7 @@ function SingleUserView() {
                             <div className="col-md-3 col-xs-12 mt-3">
 
                                 <div>
-                                    <img src={const_data.public_image_url + "/" + thisUser?.profile} className="w-100 img-responsive img-thumbnail" />
+                                    <img src={!thisUser?.profile ? "assets/images/male.png" : const_data.user_profile_path + "/" + thisUser?.profile} className="w-100 img-responsive img-thumbnail" />
                                 </div>
 
                                 {/* <a href="" className="btn btn-success w-100 mt-2">Downalod Sales Report</a> */}
@@ -192,7 +192,8 @@ function SingleUserView() {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> : null
+                }
 
             </div>
         </AdminLayout>

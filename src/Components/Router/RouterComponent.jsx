@@ -149,17 +149,15 @@ function RouterComponent() {
                     email: returnData?.email
                 }
 
+ 
+                dispatch(adminSlicerAction.setAdminAsLogged({ admin: adminData, adminAuth: JSON.stringify(authDataLocal), adminProfile: JSON.stringify(profileData) }))
 
-                console.log(adminData)
-
-                dispatch(adminSlicerAction.setAdminAsLogged({ admin: adminData }))
-
-            } else {
-                console.log("Do not have valid JWT Auth")
+            } else { 
+                dispatch(adminSlicerAction.adminLogout())
             }
 
-        } catch (e) {
-
+        } catch (e) { 
+            dispatch(adminSlicerAction.adminLogout())
         }
     }
 

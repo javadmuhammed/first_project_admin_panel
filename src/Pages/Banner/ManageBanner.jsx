@@ -80,6 +80,7 @@ function ManageBanner() {
 
 
     function sortBannerList(status) {
+        $("#bannerTable").DataTable().destroy();
         if (status === "ALL") {
             setBannerList(tempBannerList)
         } else {

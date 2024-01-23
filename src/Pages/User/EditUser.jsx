@@ -13,6 +13,7 @@ function EditUser() {
     let userImage = useRef();
     let { edit_id } = useParams();
     let navigate = useNavigate()
+    let [startEditing, setStartEditing] = useState(false);
 
     let [initValues, setInitValues] = useState({
         first_name: "",
@@ -25,18 +26,21 @@ function EditUser() {
     })
 
     let onUserAddSubmit = (values, { resetForm }) => {
-        values.profile = userImage.current.value
- 
-        updateUsers([edit_id], values).then((data) => {
-            console.log(data)
-            let response = data?.data;
-            if (response?.status) {
-                toast.success("User successfuly updated")
-                navigate("/manage_user")
-            } else {
-                toast.error(response.msg)
-            }
-        }).catch((err) => toast.success("Something went wrong"))
+
+        if (startEditing) {
+            values.profile = userImage.current.value
+
+            updateUsers([edit_id], values).then((data) => {
+                console.log(data)
+                let response = data?.data;
+                if (response?.status) {
+                    toast.success("User successfuly updated")
+                    navigate("/manage_user")
+                } else {
+                    toast.error(response.msg)
+                }
+            }).catch((err) => toast.success("Something went wrong"))
+        }
 
         // addUser(values).then((data) => {
         //     let response = data?.data;
@@ -50,11 +54,11 @@ function EditUser() {
     }
 
     let validateUserScheme = Yup.object().shape({
-        first_name: Yup.string("Please enter valid string").required("Please enter first name"),
-        last_name: Yup.string("Please enter valid string").required("Please enter last name"),
+        first_name: Yup.string("Please enter valid string").trim().required("Please enter first name"),
+        last_name: Yup.string("Please enter valid string").trim().required("Please enter last name"),
         mobile: Yup.number("Please enter valid number").required("Please enter phone number").min(10, "Please enter minimum 10 digit"),
-        email: Yup.string("Please enter valid email").required("Please enter valid email address").email("Please enter valid email address"),
-        password: Yup.string("Please enter valid password"),
+        email: Yup.string("Please enter valid email").trim().required("Please enter valid email address").email("Please enter valid email address"),
+        password: Yup.string("Please enter valid password").trim(),
         status: Yup.bool("Please enter valid status").required("Please enter valid status"),
     })
 
@@ -74,6 +78,7 @@ function EditUser() {
                 }
                 userImage.current.value = user.profile ?? ""
                 setInitValues(initValuesTemplate)
+                setStartEditing(true);
             }
         }).catch((err) => {
             console.log(err)
@@ -85,7 +90,7 @@ function EditUser() {
     return (
         <AdminLayout>
             <div className="content_body" id="content_body">
-                <div className="wrapper_content_body">
+                {startEditing ? <div className="wrapper_content_body">
                     <h2>Add User</h2>
 
                     <div className="content_box_border">
@@ -95,7 +100,7 @@ function EditUser() {
                                 onSubmit={onUserAddSubmit}
                                 validationSchema={validateUserScheme}
                                 enableReinitialize
-                                
+
                             >
                                 <Form>
                                     <div className="row">
@@ -183,7 +188,8 @@ function EditUser() {
                             </Formik>
                         </div>
                     </div>
-                </div>
+                </div> : null
+                }
             </div>
         </AdminLayout>
     )

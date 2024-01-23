@@ -14,7 +14,7 @@ import { getValidDateFormat } from '../../helper/Helper';
 function ViewSingleProduct() {
 
     let { product_id } = useParams();
-    let [product_data, setProductData] = useState({});
+    let [product_data, setProductData] = useState(null);
     let [productImages, setProductImages] = useState([]);
     let [thisOrder, setThisOrders] = useState([]);
 
@@ -31,6 +31,11 @@ function ViewSingleProduct() {
         $('#productOrders').DataTable();
     }, [thisOrder])
 
+
+
+    function downloadSalesReport() {
+
+    }
 
 
     useEffect(() => {
@@ -67,7 +72,7 @@ function ViewSingleProduct() {
     return (
         <AdminLayout>
             <div className="content_body" id="content_body">
-                <div className="wrapper_content_body">
+                {product_data ? <div className="wrapper_content_body">
 
                     <h2>View Single Product </h2>
 
@@ -77,7 +82,7 @@ function ViewSingleProduct() {
                     <div className="content_box_border">
 
                         <span className="name_profile">
-                            {product_data?.name} <em>Product ID : {product_id} </em>
+                            {product_data?.name}
                         </span>
 
                         <div className="row">
@@ -94,7 +99,18 @@ function ViewSingleProduct() {
                                     }
                                 </Slider>
                                 {/* <img src={const_data.public_image_url + "/" + product_data?.images[0]} className="w-100 img-responsive img-thumbnail" /> */}
-                                <a href="" className="btn btn-success w-100 mt-2">Downalod Sales Report</a>
+
+                                <div id="#generateSalesReport">
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <input type="date"></input>
+                                        </div>
+                                        <div className="col-md-12">
+                                            <input type="date"></input>
+                                        </div>
+                                    </div>
+                                    <button onClick={downloadSalesReport} className="btn btn-success w-100 mt-2">Downalod Sales Report</button>
+                                </div>
                             </div>
 
                             <div className="col-md-9 col-xs-12 mt-3">
@@ -121,7 +137,7 @@ function ViewSingleProduct() {
                                             {
                                                 key: "Category",
                                                 value: product_data?.category?.name
-                                            }, 
+                                            },
                                             {
                                                 key: "Extra Description",
                                                 value: product_data?.extra_description
@@ -188,7 +204,7 @@ function ViewSingleProduct() {
                                                     <td>{eachItem.status}</td>
                                                     <td>{eachItem.payment_type}</td>
                                                     <td>
-                                                        <Link to={"view_single_order/" + eachItem._id} className="btn btn-primary">View</Link>
+                                                        <Link to={"/view_single_order/" + eachItem._id} className="btn btn-primary">View</Link>
                                                     </td>
                                                 </tr>
                                             )
@@ -214,6 +230,8 @@ function ViewSingleProduct() {
                     </div>
 
                 </div>
+                    : null
+                }
 
             </div>
         </AdminLayout >

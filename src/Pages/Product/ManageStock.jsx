@@ -16,6 +16,15 @@ function ManageStock() {
     let [productChecked, setProductChecked] = useState([]);
 
 
+    function checkSelectedCount() {
+        if (productChecked?.length < 1) {
+            toast.error("Please select any records");
+            return false;
+        }
+        return true;
+    }
+
+
     function toggleProductCheck(product_id) {
         if (productChecked.includes(product_id)) {
             setProductChecked(productChecked.filter((checked) => checked != product_id));
@@ -24,6 +33,13 @@ function ManageStock() {
         }
     }
 
+
+    function filtterStockProduct(fromStock, toStock) { 
+
+        let fillterItems = tempStockList.filter((items) => (items.stock <= fromStock && items.stock >= toStock));
+         $('#stockListTable').DataTable().destroy()
+        setStockList(fillterItems)
+    }
 
     useEffect(() => {
         let table = $('#stockListTable').DataTable();
@@ -47,24 +63,24 @@ function ManageStock() {
 
 
     function updateStocktems(stockItem) {
-        updateManyProduct(productChecked.join(","), { stock: stockItem }).then((status) => {
-            if (status?.status) {
-                toast.success("Stock update success");
-                productChecked.forEach((eachId) => {
-                    document.getElementById("row_id_" + eachId).remove()
-                })
-            } else {
+
+        if (checkSelectedCount()) {
+            updateManyProduct(productChecked.join(","), { stock: stockItem }).then((status) => {
+                if (status?.status) {
+                    toast.success("Stock update success");
+                    productChecked.forEach((eachId) => {
+                        document.getElementById("row_id_" + eachId).remove()
+                    })
+                } else {
+                    toast.error("Something went wrong")
+                }
+            }).catch((err) => {
                 toast.error("Something went wrong")
-            }
-        }).catch((err) => {
-            toast.error("Something went wrong")
-        })
+            })
+        }
     }
 
-    function filtterStockProduct(stock) {
-        let fillterItems = stockList.filter((items) => items.stock <= stock);
-        setStockList(fillterItems)
-    }
+
 
     return (
         <AdminLayout>
@@ -77,15 +93,19 @@ function ManageStock() {
                         <div className="row rmr">
 
                             <div className="col-lg-3 col-xs-12 col-sm-6">
-                                <FiltterButton isButton={true} className={"green"} title={"Add Product"} icon={"fa-add"} to={"/add_product"} />
+                                <FiltterButton isButton={false} className={"green"} title={"Add Product"} icon={"fa-add"} to={"/add_product"} />
                             </div>
 
                             <div className="col-lg-3 col-xs-12 col-sm-6">
-                                <FiltterButton onClick={() => { filtterStockProduct(0) }} isButton={true} className={"green"} title={"Out Of Stocks only"} icon={"fa-list"} />
+                                <FiltterButton onClick={() => { filtterStockProduct(50,0) }} isButton={true} className={"green"} title={"Reset Sort"} icon={"fa-list"} />
                             </div>
 
                             <div className="col-lg-3 col-xs-12 col-sm-6">
-                                <FiltterButton onClick={() => { filtterStockProduct(50) }} isButton={true} className={"green"} title={"Limited Stock"} icon={"fa-thumbs-up"} to={"/add_product"} />
+                                <FiltterButton onClick={() => { filtterStockProduct(0, 0) }} isButton={true} className={"green"} title={"Out Of Stocks only"} icon={"fa-list"} />
+                            </div>
+
+                            <div className="col-lg-3 col-xs-12 col-sm-6">
+                                <FiltterButton onClick={() => { filtterStockProduct(50, 1) }} isButton={true} className={"green"} title={"Limited Stock"} icon={"fa-thumbs-up"} to={"/add_product"} />
                             </div>
 
 

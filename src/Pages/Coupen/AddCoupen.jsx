@@ -44,15 +44,30 @@ function AddCoupen() {
   }
 
   let schemeValidation = Yup.object().shape({
-    name: Yup.string("Please valid string").required("Coupen name is required"),
-    code: Yup.string("Please valid string").required("Coupen code is required"),
-    description: Yup.string("Please valid string").required("Coupen description is required"),
-    offer: Yup.string("Please valid string").required("Coupen offer is required"),
+    name: Yup.string("Please valid string").trim().required("Coupen name is required"),
+    code: Yup.string("Please valid string").trim().required("Coupen code is required"),
+    description: Yup.string("Please valid string").trim().required("Coupen description is required"),
+    offer: Yup.number().typeError("Please enter valid offer").min("1", 'Minimum 1 is required').required("Coupen offer is required"),
     minimum_order: Yup.number().typeError("Please enter valid value").required("Coupen minimum value is required"),
     maximum_order: Yup.number().typeError("Please valid value").moreThan(Yup.ref("minimum_order"), "Please enter value greater than minimum order").required("Coupen maximum value is required"),
     valid_from: Yup.date("Please valid date").required("Coupen valid from is required"),
-    valid_to: Yup.date("Please valid date").required("Coupen valid to is required"),
-    status: Yup.string("Please valid string").required("Coupen status is required"),
+    valid_to: Yup.date()
+    .required('Coupon valid to is required')
+    .test(
+      'is-valid-date-range',
+      'Coupon validation end date cannot be less than start date',
+      function (validTo) {
+        const validFrom = this.parent.valid_from;
+
+        // Check if both dates are valid and validTo is not less than validFrom
+        if (validFrom && validTo && validTo >= validFrom) {
+          return true;
+        }
+
+        return false;
+      }
+    ),
+    status: Yup.string("Please valid string").trim().required("Coupen status is required"),
   })
 
   return (

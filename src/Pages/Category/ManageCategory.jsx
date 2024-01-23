@@ -16,6 +16,19 @@ function ManageCategory() {
     let [checkedCategory, setCheckedCategory] = useState([]);
 
 
+    function filtterCategory(type) {
+
+        if (type == "ALL") { 
+            $("#categoryTable").DataTable().destroy()
+            setCategoryList(tempCategoryList)
+        }else{
+            let filtter = tempCategoryList.filter((items) => items.status == type);
+            $("#categoryTable").DataTable().destroy()
+            setCategoryList(filtter)
+        }
+
+    }
+
     useEffect(() => {
         let table = $("#categoryTable").DataTable();
 
@@ -49,10 +62,7 @@ function ManageCategory() {
     }
 
 
-    function filtterCategory(type) {
-        let filtter = tempCategoryList.filter((items) => items.status == type);
-        setCategoryList(filtter)
-    }
+
 
     function deleteCategory() {
         deleteCategoryEndPoint(checkedCategory.join(",")).then((dlt) => {
@@ -105,6 +115,12 @@ function ManageCategory() {
 
                             <div className="col-lg-3 col-xs-12 col-sm-6">
                                 <FiltterButton isButton={false} className={"green"} title={"Add Category "} icon={"fa-add"} to={"/add_category"} />
+                            </div>
+
+
+
+                            <div className="col-lg-3 col-xs-12 col-sm-6">
+                                <FiltterButton onClick={() => { filtterCategory("ALL") }} isButton={true} className={"green"} title={"All Category"} icon={"fa-list"} />
                             </div>
 
                             <div className="col-lg-3 col-xs-12 col-sm-6">
@@ -168,7 +184,7 @@ function ManageCategory() {
                                             <tr id={"row_id_" + categoryItem._id}>
                                                 <td>
                                                     <input className='check_select' checked={checkedCategory.includes(categoryItem._id)} onChange={() => { toggleCheckedCategory(categoryItem._id) }} type="checkbox" />
-                                                </td> 
+                                                </td>
                                                 <td>{categoryItem.name}</td>
                                                 <td><img src={const_data.public_image_url + "/" + categoryItem.image} width={"100px"} alt="" /></td>
                                                 <td>{categoryItem?.offer}</td>

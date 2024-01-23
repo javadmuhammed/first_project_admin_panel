@@ -14,7 +14,7 @@ function ViewSingleOrder() {
 
     let { order_id } = useParams();
     let navigate = useNavigate();
-    let [thisOrder, setThisOrder] = useState();
+    let [thisOrder, setThisOrder] = useState(null);
 
     let [status, setStatus] = useState(const_data.ORDER_STATUS)
     let [nextStatus, setNextStatus] = useState([]);
@@ -25,7 +25,7 @@ function ViewSingleOrder() {
         let orderStatusAsArray = Object.values(const_data.ORDER_STATUS);
         let indexOfCurrentStatus = orderStatusAsArray.slice(orderStatusAsArray.indexOf(thisOrder?.status), orderStatusAsArray.length);
         setStatus(indexOfCurrentStatus)
-        
+
 
 
         getSingleOrder(order_id).then((data) => {
@@ -47,7 +47,7 @@ function ViewSingleOrder() {
 
     function updateOrderStatus(newStatus) {
 
-       
+
         confirmAlert({
             title: 'Confirm to submit',
             message: 'Are you sure to do this.',
@@ -81,7 +81,7 @@ function ViewSingleOrder() {
                 }
             ]
         });
- 
+
     }
 
 
@@ -90,7 +90,7 @@ function ViewSingleOrder() {
             console.log(downloadUrl.data)
             let data = downloadUrl.data;
             const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
- 
+
             let objectUrl = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = objectUrl;
@@ -107,10 +107,10 @@ function ViewSingleOrder() {
 
     return (
         <AdminLayout>
- 
+
 
             <div className="content_body" id="content_body">
-                <div className="wrapper_content_body">
+                {thisOrder ? <div className="wrapper_content_body">
 
                     <h2>View Single Order    </h2>
                     <p>Update Order Status</p>
@@ -177,7 +177,7 @@ function ViewSingleOrder() {
                                             },
                                             {
                                                 key: "Order Date",
-                                                value: getValidDateFormat(thisOrder?.order_date) 
+                                                value: getValidDateFormat(thisOrder?.order_date)
                                             }, {
                                                 key: "Shipper Name",
                                                 value: thisOrder?.shipper_name
@@ -188,7 +188,7 @@ function ViewSingleOrder() {
                                                 key: "Status",
                                                 value: thisOrder?.status,
                                                 id: "status_field",
-                                            },   {
+                                            }, {
                                                 key: "Payment Type",
                                                 value: thisOrder?.payment_type
                                             }, {
@@ -197,7 +197,7 @@ function ViewSingleOrder() {
                                             },
                                             {
                                                 key: "Product Variation",
-                                                value: thisOrder?.products?.variation
+                                                value: thisOrder?.products?.variation + "Kg"
                                             }
 
                                         ]
@@ -209,7 +209,7 @@ function ViewSingleOrder() {
                                     <ProfileDataDetails
                                         title={"Product Details"}
                                         dataMap={
-                                            [ 
+                                            [
                                                 {
                                                     key: "Product Name",
                                                     value: thisOrder?.product?.name
@@ -312,9 +312,10 @@ function ViewSingleOrder() {
                         </div>
 
                     </div>
-                </div>
+                </div> : null
+                }
             </div>
-        </AdminLayout >
+        </AdminLayout>
     )
 }
 

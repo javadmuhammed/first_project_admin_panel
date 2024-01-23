@@ -2,14 +2,19 @@ import React, { Fragment, useEffect, useState } from 'react'
 import SideBar from './SideBar'
 import SelectImage from '../ImageModel/Component/SelectImage'
 import UploadImage from '../ImageModel/UploadImage'
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../Util/LoadingSpinner';
+import { useDispatch, useSelector } from 'react-redux';
+import { adminSlicerAction } from '../../Redux/Slicer/AdminSlicer';
+import { const_data } from '../../const/const_data';
 
 function AdminLayout({ children }) {
 
 
     const { pathname } = useLocation();
-    let [isLoading,setLoading] = useState(true);
+    let [isLoading, setLoading] = useState(true);
+    let dispatch = useDispatch();
+    let navigate = useNavigate();
 
     var loadScript = function (src) {
         var tag = document.createElement('script');
@@ -33,6 +38,17 @@ function AdminLayout({ children }) {
 
 
 
+    function adminLogout() {
+        dispatch(adminSlicerAction.adminLogout())
+        navigate("/login", { replace: true })
+    }
+
+    function navigateToFrontEnd() {
+        window.open(const_data.FRONT_END_DOMAIN, '_blank')
+    }
+
+
+
     return (
         <Fragment>
             <UploadImage></UploadImage>
@@ -48,10 +64,10 @@ function AdminLayout({ children }) {
                         <i id="asidebard_btn" className="fa-solid fa-bars"></i>
                     </a>
                     <ul>
-                    
-                        <li className="removeres">HELLO, JAWAD</li>
-                        <li><i className="fa-solid fa-laptop"></i> FRONT END</li>
-                        <li><i className="fa-solid fa-right-from-bracket"></i> LOG OUT</li>
+
+                        <li className="removeres">HELLO, Admin</li>
+                        <li type="button" onClick={navigateToFrontEnd}><i className="fa-solid fa-laptop"></i> FRONT END</li>
+                        <li type="button" onClick={adminLogout}><i className="fa-solid fa-right-from-bracket"></i> LOG OUT</li>
                     </ul>
                 </nav>
             </div>

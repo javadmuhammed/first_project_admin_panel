@@ -11,9 +11,7 @@ import { toast } from 'react-toastify';
 
 
 function GenerateSalesReport() {
-
-  // from_date,to_date
-
+ 
   let [categoryList, setCategoryList] = useState([]);
   let [allOrders, setAllOrders] = useState([]);
   let [temp_order, setTempOrders] = useState([]); 
@@ -117,7 +115,7 @@ function GenerateSalesReport() {
 
 
   let handleSubmit = function (values) {
-    console.log(values)
+ 
     arrangeOrderTable(values.from_date, values.to_date, values.status, values.category)
     downloadButtonGenerate(values.from_date, values.to_date, values.category, values.status)
     downloadSalesReportAsPDF(values.from_date, values.to_date, values.category, values.status)
@@ -126,25 +124,26 @@ function GenerateSalesReport() {
 
   function arrangeOrderTable(from_date, to_date, status, category) {
 
-    // let newData = temp_order.filter((eachItems) => {
-    //   if (new Date(eachItems.order_date) <= new Date(to_date) && new Date(eachItems.order_date) >= new Date(from_date)) {
-    //     let include = true;
-    //     if (category != "") {
-    //       if (eachItems.products.category != category) {
-    //         include = false;
-    //       }
-    //     }
-    //     if (status != "") {
-    //       if (eachItems.status != status) {
-    //         include = false;
-    //       }
-    //     }
-    //     return include;
-    //   } else {
-    //     return false;
-    //   }
-    // });
-    // setAllOrders(newData)
+    let newData = temp_order.filter((eachItems) => {
+      if (new Date(eachItems.order_date) <= new Date(to_date) && new Date(eachItems.order_date) >= new Date(from_date)) {
+        let include = true;
+        if (category != "") {
+          if (eachItems.products.category != category) {
+            include = false;
+          }
+        }
+        if (status != "") {
+          if (eachItems.status != status) {
+            include = false;
+          }
+        }
+        return include;
+      } else {
+        return false;
+      }
+    });
+    $("#generateSalesReport").DataTable().destroy()
+    setAllOrders(newData)
   }
 
   return (

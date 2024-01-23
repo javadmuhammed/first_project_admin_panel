@@ -19,11 +19,7 @@ function ManageOrders() {
     }, [orderList])
 
 
-    useEffect(() => {
-
-       
-
-
+    useEffect(() => { 
 
         getAllOrder().then((response) => {
             let response_data = response?.data;
@@ -47,11 +43,14 @@ function ManageOrders() {
     }
 
     function filtterOrder(newStatus) {
+        
         if (newStatus == "ALL") {
+            $('#orderTable').DataTable().destroy();
             setOrderList(TempOrderChecked)
         } else {
-            let statusMatched = TempOrderChecked.filter((items) => items.status == newStatus);
+            let statusMatched = TempOrderChecked.filter((items) => items.status === newStatus);
             console.log(statusMatched)
+            $('#orderTable').DataTable().destroy();
             setOrderList(statusMatched.reverse())
         }
     }
@@ -115,7 +114,7 @@ function ManageOrders() {
                                                 <td>{orderItem.order_id}</td>
                                                 <td>{getValidDateFormat(orderItem.order_date)}</td>
                                                 <td>{orderItem.shipper_name}</td>
-                                                <td>{orderItem.total}</td>
+                                                <td>{Number(orderItem.total).toFixed(2)}</td>
                                                 <td>{orderItem.status}</td> 
                                                 <td>{orderItem.delivery_time}</td>
                                                 <td><Link to={"/view_single_order/" + orderItem._id} className='btn btn-primary'>View</Link></td>

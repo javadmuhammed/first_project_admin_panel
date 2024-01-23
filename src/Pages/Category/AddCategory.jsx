@@ -18,13 +18,14 @@ function AddCategory() {
     let initialValues = {
         name: "",
         status: null,
-        categoryImage: ""
+        categoryImage: "",
+        offer:""
     }
 
     let validationSchema = Yup.object().shape({
-        name: Yup.string("Name should be string").required("Name is required"),
-        status: Yup.string("").required("Status is required"),
-        offer: Yup.number("Please enter valid number").max(10, "Offer percentage must be less than 10%")
+        name: Yup.string("Name should be string").trim().required("Name is required"),
+        status: Yup.string("").trim().required("Status is required"),
+        offer: Yup.number("Please enter valid number").required("Please enter offer percentage").max(10, "Offer percentage must be less than 10%")
     })
 
     function handleSubmit(values) {

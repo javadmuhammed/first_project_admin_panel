@@ -15,7 +15,7 @@ function ManageUsers() {
     let [userChecked, setUserChecked] = useState([])
 
 
-    
+
     function updateUsersTable(users) {
         $("#userTable").DataTable().destroy()
         setAllUsers(users)
@@ -41,11 +41,13 @@ function ManageUsers() {
     function filtterUsers(status) {
         if (status === "ALL") {
             updateUsersTable(tempUsers)
-        } else if (status) {
-            let filtterActiveUsers = tempUsers.filter((each) => each.status)
+        } else if (status===true) {
+            
+            let filtterActiveUsers = tempUsers.filter((each) => each.status!=false && each.status!='false')
+           console.log(filtterActiveUsers)
             updateUsersTable(filtterActiveUsers)
         } else {
-            let filtterActiveUsers = tempUsers.filter((each) => !each.status)
+            let filtterActiveUsers = tempUsers.filter((each) => (each.status == false || each.status == 'false'))
             updateUsersTable(filtterActiveUsers)
         }
     }
@@ -178,6 +180,8 @@ function ManageUsers() {
                                                 <td>{eachUser.mobile}</td>
                                                 <td>{eachUser?.email}</td>
                                                 <td>
+                                                    
+
                                                     {(eachUser.status=="false" || eachUser.status==false) ? "In Active" : "Active"}
                                                 </td>
                                                 <td>

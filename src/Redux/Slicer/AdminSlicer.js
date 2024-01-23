@@ -14,6 +14,7 @@ export let AdminLoginPost = createAsyncThunk("admin/login", async ({ username, p
 let AdminSlicer = createSlice({
     name: "admin",
     initialState: {
+        isLoading: true,
         isLogged: false,
         adminData: {
             username: null,
@@ -26,13 +27,18 @@ let AdminSlicer = createSlice({
         }
     },
     reducers: {
-        setAdminAsLogged: (state, action) => {
-            state.isLogged = true 
+        setAdminAsLogged: (state, action) => { 
+            state.isLogged = true
             state.adminData = { ...action.payload.admin }
+            state.isLoading = false;
+            localStorage.setItem("adminAuth", action.payload.adminAuth);
+            localStorage.setItem("adminData", action.payload.adminProfile); 
         },
-        adminLogout: (state, action) => {
-            state.isLogged = false; 
+        adminLogout: (state, action) => { 
+            state.isLogged = false;
+            state.isLoading = false;
             state.adminData = {}
+            state.isLoading = false;
         }
     },
     extraReducers: (builder) => {
@@ -41,7 +47,8 @@ let AdminSlicer = createSlice({
             console.log(action.payload?.data)
             if (returnData) {
                 if (returnData?.status) {
-                    state.isLogged = true; 
+                    state.isLogged = true;
+                    state.isLoading = false;
                     let adminData = {
                         username: returnData?.username,
                         first_name: returnData?.first_name,
@@ -55,9 +62,7 @@ let AdminSlicer = createSlice({
                     state.adminData = { ...adminData }
                     authHelper.setDataLocalStorage(adminData);
                     authHelper.setJwtLocalStorage(returnData?.access_token, returnData?._id);
-                } else {
-                    alert(returnData?.msg)
-                }
+                }  
             }
 
         })
