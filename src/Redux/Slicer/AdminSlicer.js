@@ -39,6 +39,8 @@ let AdminSlicer = createSlice({
             state.isLoading = false;
             state.adminData = {}
             state.isLoading = false;
+            localStorage.setItem("adminAuth", "{}");
+            localStorage.setItem("adminData", "{}");  
         }
     },
     extraReducers: (builder) => {
