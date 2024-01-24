@@ -10,11 +10,12 @@ import { toast } from 'react-toastify';
 
 
 
+
 function GenerateSalesReport() {
- 
+
   let [categoryList, setCategoryList] = useState([]);
   let [allOrders, setAllOrders] = useState([]);
-  let [temp_order, setTempOrders] = useState([]); 
+  let [temp_order, setTempOrders] = useState([]);
   let [downloadUrl, setDownloadUrl] = useState("");
   let [downloadUrlPDF, setDownloadUrlPDF] = useState("");
 
@@ -22,7 +23,8 @@ function GenerateSalesReport() {
 
     downloadSalesReportAsPdf(from_date, to_date, category, status).then((dt) => {
 
-       try {
+      console.log(dt)
+      try {
         let data = dt.data;
         console.log(data)
 
@@ -86,9 +88,11 @@ function GenerateSalesReport() {
       let response = data.data;
       if (response.status) {
         $("#generateSalesReport").DataTable().destroy();
-        setAllOrders(response.orders.reverse())
-        setTempOrders(response.orders.reverse())
-        console.log(response.orders)
+        let orders = response.orders.reverse();
+
+        let deliveredOnly = orders.filter((each) => each.status = const_data.ORDER_STATUS.DELIVERED)
+        setAllOrders(deliveredOnly)
+        setTempOrders(deliveredOnly)
       }
     }).catch((err) => {
     })
@@ -115,7 +119,7 @@ function GenerateSalesReport() {
 
 
   let handleSubmit = function (values) {
- 
+
     arrangeOrderTable(values.from_date, values.to_date, values.status, values.category)
     downloadButtonGenerate(values.from_date, values.to_date, values.category, values.status)
     downloadSalesReportAsPDF(values.from_date, values.to_date, values.category, values.status)
@@ -158,7 +162,7 @@ function GenerateSalesReport() {
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-                onSubmit={handleSubmit} 
+                onSubmit={handleSubmit}
               >
                 <Form>
                   <div className="row">
@@ -236,7 +240,7 @@ function GenerateSalesReport() {
                 </div>
                 <div className="col-md-6 d-flex justify-content-end">
                   <a href={downloadUrlPDF} download="sales_report_pdf.pdf" className='btn btn-success'> <i className='fa fa-download'></i> Download As PDF</a>
-                  <a href={downloadUrl} download="sales_report.xlsx"  className='btn btn-success'> <i className='fa fa-download'></i> Download As Excel</a>
+                  <a href={downloadUrl} download="sales_report.xlsx" className='btn btn-success'> <i className='fa fa-download'></i> Download As Excel</a>
                 </div>
               </div>
             </div>
