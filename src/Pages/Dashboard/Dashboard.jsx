@@ -48,7 +48,7 @@ function Dashboard() {
 
         getSiteStatics(startDateWithFormat, endDateWithFormat, chartType).then((data) => {
             let response = data?.data;
-
+            let statics = response?.data;
             if (response?.status) {
                 let statics = response?.data;
                 setUserGraphData(statics?.users_graph)
@@ -58,7 +58,7 @@ function Dashboard() {
                 setSiteStatic(statics?.site_statics)
 
                 console.log(statics)
-            }
+            } 
         }).catch((err) => {
             console.log(err);
         })
@@ -129,7 +129,7 @@ function Dashboard() {
 
                     <div className="recennt_joings mb-5 row">
 
-                        <div className="col-md-6">
+                        {/* <div className="col-md-6">
                             <div className="shadow p-3 mb-5 bg-white rounded">
                                 <h5 className="mb-3">Users Statics</h5>
                                 <ResponsiveContainer width="100%" height={200}>
@@ -181,7 +181,7 @@ function Dashboard() {
                                 </ResponsiveContainer>
 
                             </div>
-                        </div>
+                        </div> */}
  
                         <div className="col-md-6">
                             <div className="shadow p-3  bg-white rounded">

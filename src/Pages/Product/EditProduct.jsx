@@ -9,7 +9,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 function EditProduct() {
 
 
-  let productImags = useRef();
+  // let productImags = useRef();
+  let [productImags,setProductImage] = useState()
   let [productImagesError, updateImageError] = useState({ error: false, msg: "Product images is required" })
   let { edit_id } = useParams();
   let navigate = useNavigate();
@@ -62,13 +63,18 @@ function EditProduct() {
           stock: product_item.stock,
           status: product_item.status,
         })
+        let productImages = product_item.images?.join(",");
+        
         setStartEditing(true)
-        productImags.current.value = product_item.images?.join(",");
+        setProductImage(productImages)
+      
+
       } else {
         navigate("/manage_product")
       }
     }).catch((err) => {
-      navigate("/manage_product")
+      console.log(err)
+      // navigate("/manage_product")
     })
   }, [edit_id])
 
@@ -95,7 +101,7 @@ function EditProduct() {
   const handleSubmit = (values) => {
 
     if (startEditing) {
-      let images = productImags.current.value;
+      let images = productImags;
 
       if (images == "" || images == null) {
         updateImageError({ error: true, msg: "Product images is required" });
@@ -190,12 +196,12 @@ function EditProduct() {
                       <div className="col-md-6">
                         <div className="fileselect form_group" onClick={
                           () => {
-                            window.showSelectImage('productImage', productImags.current.value)
+                            window.showSelectImage('productImage', productImags)
                           }
                         }>
                           <label htmlFor="images">Images</label>
 
-                          <input ref={productImags} className="pointerNone" id="productImage" name="productImage" type="text" placeholder="Select Product Images" />
+                          <input value={productImags} className="pointerNone" id="productImage" name="productImage" type="text" placeholder="Select Product Images" />
 
                           {
                             productImagesError.error && (

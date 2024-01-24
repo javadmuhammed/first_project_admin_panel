@@ -2,12 +2,13 @@ import React from 'react'
 import { confirmAlert } from 'react-confirm-alert'
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-function ActionButton({ className, onClickAction, title, icon }) {
+function ActionButton({ className, onClickAction, title, icon, needAlert = true }) {
 
 
     function onActionSubmit() {
+ 
 
-        confirmAlert({
+        needAlert ? confirmAlert({
             title: "Confirm",
             message: "Are you sure want to submit?",
             buttons: [
@@ -23,7 +24,7 @@ function ActionButton({ className, onClickAction, title, icon }) {
                     }
                 },
             ]
-        })
+        }) : onClickAction()
     }
 
 

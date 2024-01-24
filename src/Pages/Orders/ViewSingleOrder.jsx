@@ -46,7 +46,7 @@ function ViewSingleOrder() {
 
 
     function updateOrderStatus(newStatus) {
-
+ 
 
         confirmAlert({
             title: 'Confirm to submit',
@@ -66,8 +66,7 @@ function ViewSingleOrder() {
                             } else {
                                 toast.error(response.msg)
                             }
-                        }).catch((err) => {
-
+                        }).catch((err) => { 
                             console.log("The error is" + err)
                             toast.error("Something went wrong")
                         })
@@ -135,7 +134,8 @@ function ViewSingleOrder() {
                                         nextStatus?.map((items) => {
                                             return (
                                                 <div className="col-lg-3 col-xs-12 col-sm-4">
-                                                    <ActionButton className={"green"} title={const_data.ORDER_STATUS[items]} onClickAction={() => {
+                                                    <ActionButton needAlert={false} className={"green"} title={const_data.ORDER_STATUS[items]} onClickAction={() => {
+                                                   
                                                         updateOrderStatus(items)
                                                         // setNextOrderStatus(items)
 
