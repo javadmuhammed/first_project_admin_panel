@@ -26,8 +26,9 @@ function ManageOrders() {
             console.log(response_data)
             if (response_data?.status) {
                 $('#orderTable').DataTable().destroy();
-                setOrderList(response_data.orders?.reverse())
-                setTempOrderChecked(response_data.orders.reverse())
+                console.log(response_data.orders)
+                setOrderList(response_data.orders)
+                setTempOrderChecked(response_data.orders)
             }
         }).catch((err) => {
             console.log(err)

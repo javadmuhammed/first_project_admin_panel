@@ -84,7 +84,7 @@ function SiteSettings() {
             }
         }).catch((err) => {
             console.log(err);
-            alert("ERROR")
+            // alert("ERROR")
         })
     }, [])
 

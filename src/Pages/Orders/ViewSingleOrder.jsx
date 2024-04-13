@@ -35,6 +35,7 @@ function ViewSingleOrder() {
                 let nextStatus = getNextOrderStatus(response?.order?.status)
                 setThisOrder(response.order)
                 setNextStatus(nextStatus);
+                console.log(response.order)
 
             } else {
                 navigate("/manage_orders");
@@ -159,9 +160,9 @@ function ViewSingleOrder() {
 
                         <div className="row">
                             <div className="col-md-3 col-xs-12 mt-3">
-                                <img src={const_data.public_image_url + "/" + thisOrder?.product?.images[0]} className="w-100 img-responsive img-thumbnail" />
+                                <img src={const_data.public_image_url + "/" + thisOrder?.products?.product?.images[0]} className="w-100 img-responsive img-thumbnail" />
                                 <a href="javascript:;" onClick={downloadInvoice} className="btn btn-success w-100 mt-2">Downalod Invoice</a>
-                                <Link to={"/view_single_product/" + thisOrder?.product?._id} className="btn btn-success w-100 mt-2">View Product</Link>
+                                <Link to={"/view_single_product/" + thisOrder?.products?.product?._id} className="btn btn-success w-100 mt-2">View Product</Link>
 
                             </div>
 
@@ -212,13 +213,13 @@ function ViewSingleOrder() {
                                             [
                                                 {
                                                     key: "Product Name",
-                                                    value: thisOrder?.product?.name
+                                                    value: thisOrder?.products?.product?.name
                                                 }, {
                                                     key: "Sale Price (Current)",
-                                                    value: thisOrder?.product?.sale_price
+                                                    value: thisOrder?.products?.product?.sale_price
                                                 }, {
                                                     key: "Original Price (Current)",
-                                                    value: thisOrder?.product?.original_price
+                                                    value: thisOrder?.products?.product?.original_price
                                                 },
                                                 // {
                                                 //     key: "Category",
